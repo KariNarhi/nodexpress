@@ -48,6 +48,9 @@ app.set("view engine", "pug");
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+// Set public folder
+app.use(express.static(path.join(__dirname, "public")));
+
 // Home route
 app.get("/", (req, res) => {
   Article.find({}, (err, articles) => {
@@ -59,6 +62,15 @@ app.get("/", (req, res) => {
         articles: articles,
       });
     }
+  });
+});
+
+// Get single article
+app.get("/article/:id", (req, res) => {
+  Article.findById(req.params.id, (err, article) => {
+    res.render("article", {
+      article: article,
+    });
   });
 });
 
