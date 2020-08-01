@@ -15,7 +15,9 @@ html
                     a.nav-link(href='/') Home 
                 li.nav-item
                     a.nav-link(href='/articles/add') Add Article
+        br
         .container
+            != messages("message", locals)
             block content
             br
             hr
