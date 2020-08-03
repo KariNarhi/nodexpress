@@ -3,11 +3,12 @@ const path = require("path");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const expressValidator = require("express-validator");
-const flash = require("connect-flash");
 const session = require("express-session");
+const passport = require("passport");
+const config = require("./config/database");
 
 // Mongoose setup
-mongoose.connect("mongodb://localhost/nodexpress", {
+mongoose.connect(config.database, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
@@ -89,6 +90,18 @@ app.use(
     },
   })
 );
+
+// Passport config
+require("./config/passport")(passport);
+
+// Passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.get("*", (req, res, next) => {
+  res.locals.user = req.user || null;
+  next();
+});
 
 // Home route
 app.get("/", (req, res) => {
