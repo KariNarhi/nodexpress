@@ -18,7 +18,6 @@ router.get("/add", ensureAuthenticated, (req, res) => {
 router.post("/add", (req, res) => {
   // Validation rules
   req.checkBody("title", "Title is required!").notEmpty();
-  //req.checkBody("author", "Author is required!").notEmpty();
   req.checkBody("body", "Body is required!").notEmpty();
 
   // Get errors
