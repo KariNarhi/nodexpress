@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 
-const database = "mongodb://localhost:27017/nodexpress";
+const database =
+  process.env.MONGO_URI || "mongodb://localhost:27017/nodexpress";
 
 // Database setup
 function db_setup() {
