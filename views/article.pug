@@ -5,6 +5,7 @@ block content
     h5 Written by #{author}
     p= article.body
     hr
+    a.btn.btn-info.mr-3(href="/") Menu
     if user
         if user.id ==article.author
             a.btn.btn-primary.mr-3(href="/articles/edit/"+article._id) Edit
