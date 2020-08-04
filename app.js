@@ -1,31 +1,19 @@
 const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
-const mongoose = require("mongoose");
 const expressValidator = require("express-validator");
 const session = require("express-session");
 const passport = require("passport");
-const config = require("./config/database");
+const db_setup = require("./config/database");
 
-// Mongoose setup
-mongoose.connect(config.database, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
-let db = mongoose.connection;
-
-// Check connection
-db.once("open", () => {
-  console.log("Connected to MongoDB");
-});
-
-// Check for db errors
-db.on("error", (err) => {
-  console.log(err);
-});
+// Bring in Article model
+let Article = require("./models/article");
 
 // Init app
 const app = express();
+
+// Setup database
+db_setup();
 
 // Set Content Security Policies
 app.use((req, res, next) => {
@@ -40,9 +28,6 @@ app.use((req, res, next) => {
   });
   next();
 });
-
-// Bring in models
-let Article = require("./models/article");
 
 // Load view engine
 app.set("views", path.join(__dirname, "views"));
@@ -122,7 +107,9 @@ app.use("/articles", articles);
 let users = require("./routes/users.js");
 app.use("/users", users);
 
+const PORT = process.env.PORT || 3000;
+
 // Start server
-app.listen(3000, () => {
-  console.log("Server started on port 3000...");
+app.listen(PORT, () => {
+  console.log("Server started on port " + PORT + "...");
 });
